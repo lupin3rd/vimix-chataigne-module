@@ -1,0 +1,507 @@
+{
+  "name":"Vimix",
+  "type":"OSC",
+  "path":"Software",
+
+  "version":"1.0.0",
+  "description":"Control Vimix through OSC protocol. Tested with version beta of Vimix.",
+  "url":"https://github.com/lupin3rd/Vimix-Chataigne-module",
+  "downloadURL":"https://github.com/lupin3rd/Vimix-Chataigne-module/archive/master.zip",
+
+  "hasInput":false,
+  "hasOutput":true,
+
+  "hideDefaultCommands":false,
+
+  "defaults":
+  {
+    "autoAdd":true,
+    "oscInput":
+    {
+      "localPort":7001
+    },
+    "OSC Outputs": {
+			"OSC Output": {
+				"local": true,
+				"remoteHost": "192.168.100.12",
+				"remotePort": 7000
+			}
+		}
+  },
+
+  "parameters":
+  {
+    "Module param":
+    {
+      "type":"Integer"
+    }
+  },
+
+  "hideDefaultParameters": [ "autoAdd", "oscInput/localPort"],
+
+  "scripts":
+  [
+    "vimix.js"
+  ],
+
+  "values":
+  {
+    "Module value":
+    {
+      "type":"Float"
+    }
+  },
+
+  "commands":
+  {
+    "Source Change":
+    {
+      "menu":"",
+      "callback":"sourcechange",
+      "parameters":
+      {
+        "Attribute":
+        {
+          "type":"Enum",
+          "options": { "Next":"next", "Previous":"previous", "Number":"number" }
+        },
+        "Number":
+        {
+          "type":"Integer",
+          "min":0,
+          "description":"index source set",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"number", "check":"equals", "action":"show" }
+        }
+      }
+    },
+    "Source Control":
+    {
+      "menu":"",
+      "callback":"sourcecontrol",
+      "parameters":
+      {
+        "Target":
+        {
+          "type":"Enum",
+          "options": { "Current":"current", "Source #ID":"id", "Name":"name", "All":"all", "Selection":"selection", "Batch #ID":"batch" }
+        },
+        "Source #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"id", "check":"equals", "action":"show" }
+        },
+        "Name": {
+          "type":"String",
+          "dependency": { "source":"Target", "value":"name", "check":"equals", "action":"show" }
+        },
+        "Batch #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"batch", "check":"equals", "action":"show" }
+        },
+        "Attribute":
+        {
+          "type":"Enum",
+          "options": { "Play":"play", "Pause":"pause", "Replay":"replay", "Alpha":"alpha", "Transparency":"transparency", "Loom":"loom", "Lock":"lock", "Seek":"seek" }
+        },
+        "Play":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"true (>0.5) false (<0.5)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"play", "check":"equals", "action":"show" }
+        },
+        "Pause":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"true (>0.5) false (<0.5)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"pause", "check":"equals", "action":"show" }
+        },
+        "Alpha":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from visible (1.0) to transparent (0.0)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"alpha", "check":"equals", "action":"show" }
+        },
+        "Transparency":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from transparent (1.0) to visible (0.0)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"transparency", "check":"equals", "action":"show" }
+        },
+        "Loom":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "description":"speed of the change of alpha",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"loom", "check":"equals", "action":"show" }
+        },
+        "Lock":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"lock (>0.5) unlock (<0.5)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"lock", "check":"equals", "action":"show" }
+        },
+        "Seek":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from begin (0.0) to end (1.0) of media source",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"seek", "check":"equals", "action":"show" }
+        }
+      }
+    },
+    "Source Geometry":
+    {
+      "menu":"",
+      "callback":"sourcegeometry",
+      "parameters":
+      {
+        "Target":
+        {
+          "type":"Enum",
+          "options": { "Current":"current", "Source #ID":"id", "Name":"name", "All":"all", "Selection":"selection", "Batch #ID":"batch" }
+        },
+        "Source #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"id", "check":"equals", "action":"show" }
+        },
+        "Name": {
+          "type":"String",
+          "dependency": { "source":"Target", "value":"name", "check":"equals", "action":"show" }
+        },
+        "Batch #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"batch", "check":"equals", "action":"show" }
+        },
+        "Attribute":
+        {
+          "type":"Enum",
+          "options": { "Position":"position", "Grab":"grab", "Size":"size", "Resize":"resize", "Angle":"angle", "Turn":"turn", "Reset":"reset" }
+        },
+        "PositionX":
+        {
+          "type":"Float",
+          "min":-4,
+          "max":4,
+          "description":"from -4.0 to 4.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"position", "check":"equals", "action":"show" }
+        },
+        "PositionY":
+        {
+          "type":"Float",
+          "min":-4,
+          "max":4,
+          "description":"from -4.0 to 4.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"position", "check":"equals", "action":"show" }
+        },
+        "GrabX":
+        {
+          "type":"Float",
+          "min":-40,
+          "max":40,
+          "description":"from -40.0 to 40.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"grab", "check":"equals", "action":"show" }
+        },
+        "GrabY":
+        {
+          "type":"Float",
+          "min":-40,
+          "max":40,
+          "description":"from -40.0 to 40.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"grab", "check":"equals", "action":"show" }
+        },
+        "SizeX":
+        {
+          "type":"Float",
+          "min":-4,
+          "max":4,
+          "description":"from -4.0 to 4.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"size", "check":"equals", "action":"show" }
+        },
+        "SizeY":
+        {
+          "type":"Float",
+          "min":-4,
+          "max":4,
+          "description":"from -4.0 to 4.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"size", "check":"equals", "action":"show" }
+        },
+        "ResizeX":
+        {
+          "type":"Float",
+          "min":-4,
+          "max":4,
+          "description":"from -4.0 to 4.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"resize", "check":"equals", "action":"show" }
+        },
+        "ResizeY":
+        {
+          "type":"Float",
+          "min":-4,
+          "max":4,
+          "description":"from -4.0 to 4.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"resize", "check":"equals", "action":"show" }
+        },
+        "Angle":
+        {
+          "type":"Float",
+          "min":-3.1416,
+          "max":3.1416,
+          "description":"from -3.1416 to 3.1416",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"angle", "check":"equals", "action":"show" }
+        },
+        "Turn":
+        {
+          "type":"Float",
+          "min":-3.1416,
+          "max":3.1416,
+          "description":"from -3.1416 to 3.1416",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"turn", "check":"equals", "action":"show" }
+        }
+      }
+    },
+    "Source Layer":
+    {
+      "menu":"",
+      "callback":"sourcelayer",
+      "parameters":
+      {
+        "Target":
+        {
+          "type":"Enum",
+          "options": { "Current":"current", "Source #ID":"id", "Name":"name", "All":"all", "Selection":"selection", "Batch #ID":"batch" }
+        },
+        "Source #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"id", "check":"equals", "action":"show" }
+        },
+        "Name": {
+          "type":"String",
+          "dependency": { "source":"Target", "value":"name", "check":"equals", "action":"show" }
+        },
+        "Batch #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"batch", "check":"equals", "action":"show" }
+        },
+        "Attribute":
+        {
+          "type":"Enum",
+          "options": { "Depth":"depth" }
+        },
+        "Depth":
+        {
+          "type":"Float",
+          "min":0,
+          "max":12,
+          "description":"from 0.0 (back) to 12.0 (front)",
+          "default":0
+        }
+      }
+    },
+    "Source Color Correction":
+    {
+      "menu":"",
+      "callback":"sourcecc",
+      "parameters":
+      {
+        "Target":
+        {
+          "type":"Enum",
+          "options": { "Current":"current", "Source #ID":"id", "Name":"name", "All":"all", "Selection":"selection", "Batch #ID":"batch" }
+        },
+        "Source #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"id", "check":"equals", "action":"show" }
+        },
+        "Name": {
+          "type":"String",
+          "dependency": { "source":"Target", "value":"name", "check":"equals", "action":"show" }
+        },
+        "Batch #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"batch", "check":"equals", "action":"show" }
+        },
+        "Attribute":
+        {
+          "type":"Enum",
+          "options": { "Brightness":"brightness", "Contrast":"contrast", "Saturation":"saturation", "Hue":"hue", "Threshold":"threshold" }
+        },
+        "Brightness":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "description":"from -1.0 to 1.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"brightness", "check":"equals", "action":"show" }
+        },
+        "Contrast":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "description":"from -1.0 to 1.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"contrast", "check":"equals", "action":"show" }
+        },
+        "Saturation":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "description":"from -1.0 (grayscale) to 1.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"saturation", "check":"equals", "action":"show" }
+        },
+        "Hue":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from 0.0 (disabled) to 1.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"hue", "check":"equals", "action":"show" }
+        },
+        "Threshold":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from 0.0 (disabled) to 1.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"threshold", "check":"equals", "action":"show" }
+        }
+      }
+    },
+    "Output":
+    {
+      "menu":"",
+      "callback":"output",
+      "parameters":
+      {
+        "Attribute":
+        {
+          "type":"Enum",
+          "options": { "Enable":"enable", "Disable":"disable", "Fading":"fading", "FadeOut":"fade-out", "FadeIn":"fade-in" }
+        },
+        "Enable":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"true (>0.5) false (<0.5)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"enable", "check":"equals", "action":"show" }
+        },
+        "Disable":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"true (>0.5) false (<0.5)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"disable", "check":"equals", "action":"show" }
+        },
+        "Fading":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from 0.0 to 1.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"fading", "check":"equals", "action":"show" }
+        },
+        "FadeOut":
+        {
+          "type":"Float",
+          "min":0,
+          "max":100,
+          "description":"from 0.0 to 100.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"fade-out", "check":"equals", "action":"show" }
+        },
+        "FadeIn":
+        {
+          "type":"Float",
+          "min":0,
+          "max":100,
+          "description":"from 0.0 to 100.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"fade-in", "check":"equals", "action":"show" }
+        }
+      }
+    },
+    "Session":
+    {
+      "menu":"",
+      "callback":"session",
+      "parameters":
+      {
+        "Attribute":
+        {
+          "type":"Enum",
+          "options": { "Open":"open", "Close":"close" }
+        },
+        "Open":
+        {
+          "type":"File",
+          "description":"file to open",
+          "dependency": { "source":"Attribute", "value":"open", "check":"equals", "action":"show" }
+        },
+        "Close":
+        {
+          "type":"Float",
+          "min":0,
+          "max":10,
+          "description":"duration (in seconds) of closing transition",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"close", "check":"equals", "action":"show" }
+        }
+      }
+    }
+  }
+}
