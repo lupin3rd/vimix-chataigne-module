@@ -60,7 +60,7 @@ function sourcechange(attribute, number) {
     }
 }
 
-function sourcecontrol(target, sourceid, name, batch, attribute, play, pause, alpha, transparency, loom, lock, seek) {
+function sourcecontrol(target, sourceid, name, batch, attribute, play, pause, alpha, transparency, loom, lock, speed, seek) {
   if(target=="id")
    {
      target = "#" + sourceid;
@@ -107,6 +107,11 @@ function sourcecontrol(target, sourceid, name, batch, attribute, play, pause, al
     {
       messageTOtarget(target, attribute, lock);
       script.log("Target: " + target + " Command: " + attribute + " Value: " + lock);
+    }
+  else if(attribute == "speed")
+    {
+      messageTOtarget(target, attribute, speed);
+      script.log("Target: " + target + " Command: " + attribute + " Value: " + speed);
     }
   else if(attribute == "seek")
     {
@@ -185,7 +190,7 @@ function sourcelayer(target, sourceid, name, batch, attribute, depth) {
     }
 }
 
-function sourcecc(target, sourceid, name, batch, attribute, brightness, contrast, saturation, hue, threshold) {
+function sourcecc(target, sourceid, name, batch, attribute, correction, color, gamma, brightness, contrast, saturation, hue, posterize, threshold, invert) {
   if(target=="id")
    {
      target = "#" + sourceid;
@@ -198,6 +203,21 @@ function sourcecc(target, sourceid, name, batch, attribute, brightness, contrast
     {
       target = "Batch#" + batch;
     }
+  if(attribute=="correction")
+   {
+     messageTOtarget(target, attribute, correction);
+     script.log("Target: " + target + " Command: " + attribute + " Value: " + correction);
+   }
+  if(attribute=="color")
+   {
+     messageTOtarget(target, attribute, color);
+     script.log("Target: " + target + " Command: " + attribute + " Value: " + color);
+   }
+  if(attribute=="gamma")
+   {
+     messageTOtarget(target, attribute, gamma);
+     script.log("Target: " + target + " Command: " + attribute + " Value: " + gamma);
+   }
   if(attribute=="brightness")
    {
       messageTOtarget(target, attribute, brightness);
@@ -218,11 +238,21 @@ function sourcecc(target, sourceid, name, batch, attribute, brightness, contrast
       messageTOtarget(target, attribute, hue);
       script.log("Target: " + target + " Command: " + attribute + " Value: " + hue);
    }
+  else if(attribute=="posterize")
+   {
+      messageTOtarget(target, attribute, posterize);
+      script.log("Target: " + target + " Command: " + attribute + " Value: " + posterize);
+   }
   else if(attribute=="threshold")
    {
       messageTOtarget(target, attribute, threshold);
       script.log("Target: " + target + " Command: " + attribute + " Value: " + threshold);
    }
+ else if(attribute=="invert")
+  {
+     messageTOtarget(target, attribute, invert);
+     script.log("Target: " + target + " Command: " + attribute + " Value: " + invert);
+  }
 }
 
 function output(attribute, enable, disable, fading, fadeout, fadein) {
