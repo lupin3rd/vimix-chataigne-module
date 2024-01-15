@@ -23,7 +23,7 @@
     "OSC Outputs": {
 			"OSC Output": {
 				"local": true,
-				"remoteHost": "192.168.100.12",
+				"remoteHost": "127.0.0.1",
 				"remotePort": 7000
 			}
 		}
@@ -105,7 +105,7 @@
         "Attribute":
         {
           "type":"Enum",
-          "options": { "Play":"play", "Pause":"pause", "Replay":"replay", "Alpha":"alpha", "Transparency":"transparency", "Loom":"loom", "Lock":"lock", "Seek":"seek" }
+          "options": { "Play":"play", "Pause":"pause", "Replay":"replay", "Alpha":"alpha", "Transparency":"transparency", "Loom":"loom", "Lock":"lock", "Speed":"speed", "Seek":"seek" }
         },
         "Play":
         {
@@ -160,6 +160,15 @@
           "description":"lock (>0.5) unlock (<0.5)",
           "default":0,
           "dependency": { "source":"Attribute", "value":"lock", "check":"equals", "action":"show" }
+        },
+        "Speed":
+        {
+          "type":"Float",
+          "min":0,
+          "max":10,
+          "description":"example: 2.0 play speed to x2 of media source",
+          "default":1,
+          "dependency": { "source":"Attribute", "value":"speed", "check":"equals", "action":"show" }
         },
         "Seek":
         {
@@ -368,7 +377,31 @@
         "Attribute":
         {
           "type":"Enum",
-          "options": { "Brightness":"brightness", "Contrast":"contrast", "Saturation":"saturation", "Hue":"hue", "Threshold":"threshold" }
+          "options": { "Correction":"correction", "Color":"color", "Gamma":"gamma", "Brightness":"brightness", "Contrast":"contrast", "Saturation":"saturation", "Hue":"hue", "Posterize":"posterize", "Threshold":"threshold", "Invert":"invert" }
+        },
+        "Correction":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"enable color correction (>0.5) and disable (<0.5)",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"correction", "check":"equals", "action":"show" }
+        },
+        "Color":
+        {
+          "type":"Color",
+          "description":"select gamma color",
+          "dependency": { "source":"Attribute", "value":"color", "check":"equals", "action":"show" }
+        },
+        "Gamma":
+        {
+          "type":"Float",
+          "min":-1,
+          "max":1,
+          "description":"from -1.0 to 1.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"gamma", "check":"equals", "action":"show" }
         },
         "Brightness":
         {
@@ -406,6 +439,15 @@
           "default":0,
           "dependency": { "source":"Attribute", "value":"hue", "check":"equals", "action":"show" }
         },
+        "Posterize":
+        {
+          "type":"Float",
+          "min":0,
+          "max":256,
+          "description":"from 0.0 (disabled) to 256.0",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"posterize", "check":"equals", "action":"show" }
+        },
         "Threshold":
         {
           "type":"Float",
@@ -414,6 +456,15 @@
           "description":"from 0.0 (disabled) to 1.0",
           "default":0,
           "dependency": { "source":"Attribute", "value":"threshold", "check":"equals", "action":"show" }
+        },
+        "Invert":
+        {
+          "type":"Float",
+          "min":0,
+          "max":2,
+          "description":"0 for None, 1 for RGB invert and 2 for luminance invert",
+          "default":0,
+          "dependency": { "source":"Attribute", "value":"invert", "check":"equals", "action":"show" }
         }
       }
     },
