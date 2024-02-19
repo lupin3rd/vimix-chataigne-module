@@ -128,9 +128,9 @@
         "Alpha":
         {
           "type":"Float",
-          "min":0,
+          "min":-1,
           "max":1,
-          "description":"from visible (1.0) to transparent (0.0)",
+          "description":"from visible (1.0) to transparent (0.0) - negative to inactive",
           "default":0,
           "dependency": { "source":"Attribute", "value":"alpha", "check":"equals", "action":"show" }
         },
@@ -465,6 +465,136 @@
           "description":"0 for None, 1 for RGB invert and 2 for luminance invert",
           "default":0,
           "dependency": { "source":"Attribute", "value":"invert", "check":"equals", "action":"show" }
+        }
+      }
+    },
+    "Source Clone Filter":
+    {
+      "menu":"",
+      "callback":"clonefilter",
+      "parameters":
+      {
+        "Target":
+        {
+          "type":"Enum",
+          "options": { "Current":"current", "Source #ID":"id", "Name":"name", "All":"all", "Selection":"selection", "Batch #ID":"batch" }
+        },
+        "Source #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"id", "check":"equals", "action":"show" }
+        },
+        "Name": {
+          "type":"String",
+          "dependency": { "source":"Target", "value":"name", "check":"equals", "action":"show" }
+        },
+        "Batch #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"batch", "check":"equals", "action":"show" }
+        },
+        "Filter":
+        {
+          "type":"Enum",
+          "options": { "None":"none", "Delay":"delay", "Resample":"resample", "Blur":"blur", "Sharpen":"sharpen", "Smooth & Noise":"smooth", "Edge":"edge", "Alpha":"alpha", "Custom":"custom" }
+        },
+        "Delay":
+        {
+          "type":"Float",
+          "min":0,
+          "max":2,
+          "description":"from 0s to 2s",
+          "default":0.50,
+          "dependency": { "source":"Filter", "value":"delay", "check":"equals", "action":"show" }
+        },
+        "Resample":
+        {
+          "type":"Enum",
+          "options": { "Double resolution":"double", "Half resolution":"half", "Quarter resolution":"quarter" },
+          "dependency": { "source":"Filter", "value":"resample", "check":"equals", "action":"show" }
+        },
+        "Blur":
+        {
+          "type":"Enum",
+          "options": { "Fast":"fast", "Gaussian":"gaussian", "Scattered":"scattered", "Opening":"opening", "Closing":"closing" },
+          "dependency": { "source":"Filter", "value":"blur", "check":"equals", "action":"show" }
+        },
+        "BlurValue":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from 0 to 1",
+          "default":0.50,
+          "dependency": { "source":"Blur", "value":"fast", "check":"notEquals", "action":"show" }
+        },
+        "Sharpen":
+        {
+          "type":"Enum",
+          "options": { "Unsharp mask":"unsharp", "Convolution":"convolution", "Edge":"edge", "White hat":"white", "Black hat":"black" },
+          "dependency": { "source":"Filter", "value":"sharpen", "check":"equals", "action":"show" }
+        },
+        "SharpenValue":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from 0 to 1",
+          "default":0.50,
+          "dependency": { "source":"Filter", "value":"sharpen", "check":"equals", "action":"show" }
+        },
+        "Smooth":
+        {
+          "type":"Enum",
+          "options": { "Bilateral":"bilateral", "Kuwahara":"kuwahara", "Opening":"opening", "Closing":"closing", "Erosion":"erosion", "Dilation":"dilation", "Denoise":"denoise", "Noise add":"noise", "Grain add":"grain" },
+          "dependency": { "source":"Filter", "value":"smooth", "check":"equals", "action":"show" }
+        },
+        "SmoothValue":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from 0 to 1",
+          "default":0.50,
+          "dependency": { "source":"Filter", "value":"smooth", "check":"equals", "action":"show" }
+        },
+        "Edge":
+        {
+          "type":"Enum",
+          "options": { "Sobel":"sobel", "Freichen":"freichen", "Thresholding":"thresholding", "Contour":"contour" },
+          "dependency": { "source":"Filter", "value":"edge", "check":"equals", "action":"show" }
+        },
+        "EdgeValue":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"from 0 to 1",
+          "default":0.50,
+          "dependency": { "source":"Filter", "value":"edge", "check":"equals", "action":"show" }
+        },
+        "Alpha":
+        {
+          "type":"Enum",
+          "options": { "Fill transparent":"fill", "Chromakey":"chromakey", "Lumakey":"lumakey" },
+          "dependency": { "source":"Filter", "value":"alpha", "check":"equals", "action":"show" }
+        },
+        "AlphaValue":
+        {
+          "type":"Float",
+          "min":0,
+          "max":1,
+          "description":"Tolerance from 0 to 1",
+          "default":0.50,
+          "dependency": { "source":"Alpha", "value":"fill", "check":"notEquals", "action":"show" }
+        },
+        "GLSLfile":
+        {
+          "type":"File",
+          "description":"file GLSL to open",
+          "dependency": { "source":"Filter", "value":"custom", "check":"equals", "action":"show" }
         }
       }
     },

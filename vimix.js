@@ -15,17 +15,22 @@ function init() {
 }
 
 //function that send OSC message to Vimix
-function messageTOtarget(target, command, val1, val2) {
+function messageTOtarget(target, command, val1, val2, val3) {
   if ( typeof val2 == 'undefined' )
   {
-    if ( typeof val1 == 'undefined' )
+    if ( typeof val2 == 'undefined' )
     {
-    local.send("/vimix/"+target+"/"+command);
+      if ( typeof val1 == 'undefined' )
+      {
+      local.send("/vimix/"+target+"/"+command);
+      } else {
+        local.send("/vimix/"+target+"/"+command, val1);
+      }
     } else {
-      local.send("/vimix/"+target+"/"+command, val1);
+      local.send("/vimix/"+target+"/"+command, val1, val2);
     }
   } else {
-    local.send("/vimix/"+target+"/"+command, val1, val2);
+    local.send("/vimix/"+target+"/"+command, val1, val2, val3);
   }
 }
 
@@ -253,6 +258,74 @@ function sourcecc(target, sourceid, name, batch, attribute, correction, color, g
      messageTOtarget(target, attribute, invert);
      script.log("Target: " + target + " Command: " + attribute + " Value: " + invert);
   }
+}
+
+function clonefilter(target, sourceid, name, batch, filter, delay, resample, blur, blurvalue, sharpen, sharpenvalue, smooth, smoothvalue, edge, edgevalue, alpha, alphavalue, glslfile) {
+  if(target=="id")
+   {
+     target = "#" + sourceid;
+   }
+  else if(target=="name")
+    {
+      target = name;
+    }
+  else if(target=="batch")
+    {
+      target = "Batch#" + batch;
+    }
+  if(filter=="none")
+   {
+     messageTOtarget(target, "filter", filter);
+     script.log("Target: " + target + " Command: " + filter);
+   }
+  else if(filter=="delay")
+   {
+     messageTOtarget(target, "filter", filter, "", delay);
+     script.log("Target: " + target + " Command: " + filter + " Value: " + delay);
+   }
+  else if(filter=="resample")
+   {
+     messageTOtarget(target, "filter", filter, resample);
+     script.log("Target: " + target + " Command: " + filter + " Value: " + resample);
+   }
+  else if(filter=="blur")
+   {
+     if(blur=="fast")
+       {
+         messageTOtarget(target, "filter", filter, blur);
+         script.log("Target: " + target + " Command: " + filter + " Value: " + blur);
+       }
+     else
+       {
+         messageTOtarget(target, "filter", filter, blur, blurvalue);
+         script.log("Target: " + target + " Command: " + filter + " Value: " + blur + " Value: " + blurvalue);
+       }
+   }
+  else if(filter=="sharpen")
+   {
+     messageTOtarget(target, "filter", filter, sharpen, sharpenvalue);
+     script.log("Target: " + target + " Command: " + filter + " Value: " + sharpen + " Value: " + sharpenvalue);
+   }
+  else if(filter=="smooth")
+   {
+     messageTOtarget(target, "filter", filter, smooth, smoothvalue);
+     script.log("Target: " + target + " Command: " + filter + " Value: " + smooth + " Value: " + smoothvalue);
+   }
+  else if(filter=="edge")
+   {
+     messageTOtarget(target, "filter", filter, edge, edgevalue);
+     script.log("Target: " + target + " Command: " + filter + " Value: " + edge + " Value: " + edgevalue);
+   }
+  else if(filter=="alpha")
+   {
+     messageTOtarget(target, "filter", filter, alpha, alphavalue);
+     script.log("Target: " + target + " Command: " + filter + " Value: " + alpha + " Value: " + alphavalue);
+   }
+  else if(filter=="custom")
+   {
+     messageTOtarget(target, "filter", filter, glslfile);
+     script.log("Target: " + target + " Command: " + filter + " Value: " + glslfile);
+   }
 }
 
 function output(attribute, enable, disable, fading, fadeout, fadein) {
