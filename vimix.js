@@ -16,7 +16,7 @@ function init() {
 
 //function that send OSC message to Vimix
 function messageTOtarget(target, command, val1, val2, val3) {
-  if ( typeof val2 == 'undefined' )
+  if ( typeof val3 == 'undefined' )
   {
     if ( typeof val2 == 'undefined' )
     {
@@ -326,6 +326,23 @@ function clonefilter(target, sourceid, name, batch, filter, delay, resample, blu
      messageTOtarget(target, "filter", filter, glslfile);
      script.log("Target: " + target + " Command: " + filter + " Value: " + glslfile);
    }
+}
+
+function cloneuniform(target, sourceid, name, batch, uniformvariable, uniformvalue) {
+  if(target=="id")
+   {
+     target = "#" + sourceid;
+   }
+  else if(target=="name")
+    {
+      target = name;
+    }
+  else if(target=="batch")
+    {
+      target = "Batch#" + batch;
+    }
+  messageTOtarget(target, "uniform", uniformvariable, uniformvalue);
+  script.log("Target: " + target + " Command: " + uniformvariable + " Value: " + uniformvalue);
 }
 
 function output(attribute, enable, disable, fading, fadeout, fadein) {
