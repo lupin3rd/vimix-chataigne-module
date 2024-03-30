@@ -598,6 +598,47 @@
         }
       }
     },
+    "Source Clone Uniform":
+    {
+      "menu":"",
+      "callback":"cloneuniform",
+      "parameters":
+      {
+        "Target":
+        {
+          "type":"Enum",
+          "options": { "Current":"current", "Source #ID":"id", "Name":"name", "All":"all", "Selection":"selection", "Batch #ID":"batch" }
+        },
+        "Source #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"id", "check":"equals", "action":"show" }
+        },
+        "Name": {
+          "type":"String",
+          "dependency": { "source":"Target", "value":"name", "check":"equals", "action":"show" }
+        },
+        "Batch #ID": {
+          "type":"Integer",
+          "min":0,
+          "default":0,
+          "dependency": { "source":"Target", "value":"batch", "check":"equals", "action":"show" }
+        },
+        "UniformVariable":
+        {
+          "type":"String"
+        },
+        "UniformValue":
+        {
+          "type":"Float",
+          "min":0,
+          "max":2,
+          "description":"from 0s to 2s",
+          "default":0
+        }
+      }
+    },
     "Output":
     {
       "menu":"",
