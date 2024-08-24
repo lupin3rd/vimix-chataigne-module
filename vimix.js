@@ -76,7 +76,7 @@ function sourcecontrol(target, sourceid, name, batch, attribute, play, pause, al
     }
   else if(target=="batch")
     {
-      target = "Batch#" + batch;
+      target = "batch#" + batch;
     }
   if(attribute == "replay")
    {
@@ -136,7 +136,7 @@ function sourcegeometry(target, sourceid, name, batch, attribute, positionx, pos
     }
   else if(target=="batch")
     {
-      target = "Batch#" + batch;
+      target = "batch#" + batch;
     }
   if(attribute == "position")
    {
@@ -186,7 +186,7 @@ function sourcelayer(target, sourceid, name, batch, attribute, depth) {
     }
   else if(target=="batch")
     {
-      target = "Batch#" + batch;
+      target = "batch#" + batch;
     }
   if( attribute == "depth" )
     {
@@ -206,7 +206,7 @@ function sourcecc(target, sourceid, name, batch, attribute, correction, color, g
     }
   else if(target=="batch")
     {
-      target = "Batch#" + batch;
+      target = "batch#" + batch;
     }
   if(attribute=="correction")
    {
@@ -271,7 +271,7 @@ function clonefilter(target, sourceid, name, batch, filter, delay, resample, blu
     }
   else if(target=="batch")
     {
-      target = "Batch#" + batch;
+      target = "batch#" + batch;
     }
   if(filter=="none")
    {
@@ -339,7 +339,7 @@ function cloneuniform(target, sourceid, name, batch, uniformvariable, uniformval
     }
   else if(target=="batch")
     {
-      target = "Batch#" + batch;
+      target = "batch#" + batch;
     }
   messageTOtarget(target, "uniform", uniformvariable, uniformvalue);
   script.log("Target: " + target + " Command: " + uniformvariable + " Value: " + uniformvalue);
