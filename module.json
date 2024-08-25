@@ -3,10 +3,10 @@
   "type":"OSC",
   "path":"Software",
 
-  "version":"1.0.0",
-  "description":"Control Vimix through OSC protocol. Tested with version beta of Vimix.",
+  "version":"0.3.0",
+  "description":"Module for interacting with Vimix (Video Live Mixer) via OSC. https://brunoherbelin.github.io/vimix/",
   "url":"https://github.com/lupin3rd/Vimix-Chataigne-module",
-  "downloadURL":"https://github.com/lupin3rd/Vimix-Chataigne-module/archive/master.zip",
+  "downloadURL":"https://github.com/lupin3rd/vimix-chataigne-module/archive/refs/heads/main.zip",
 
   "hasInput":false,
   "hasOutput":true,
