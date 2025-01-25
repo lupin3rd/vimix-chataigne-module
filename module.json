@@ -63,7 +63,7 @@
         "Attribute":
         {
           "type":"Enum",
-          "options": { "Next":"next", "Previous":"previous", "Number":"number" }
+          "options": { "Next":"next", "Previous":"previous", "Number":"number", "Name":"name" }
         },
         "Number":
         {
@@ -72,6 +72,12 @@
           "description":"index source set",
           "default":0,
           "dependency": { "source":"Attribute", "value":"number", "check":"equals", "action":"show" }
+        },
+        "Name":
+        {
+          "type":"String",
+          "description":"name source set",
+          "dependency": { "source":"Attribute", "value":"name", "check":"equals", "action":"show" }
         }
       }
     },
@@ -592,7 +598,7 @@
         },
         "GLSLfile":
         {
-          "type":"File",
+          "type":"String",
           "description":"file GLSL to open",
           "dependency": { "source":"Filter", "value":"custom", "check":"equals", "action":"show" }
         }
@@ -710,7 +716,7 @@
         },
         "Open":
         {
-          "type":"File",
+          "type":"String",
           "description":"file to open",
           "dependency": { "source":"Attribute", "value":"open", "check":"equals", "action":"show" }
         },
