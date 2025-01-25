@@ -46,7 +46,7 @@ function moduleValueChanged(value) {
   script.log(value.name + " value changed, new value: " + value.get());
 }
 
-function sourcechange(attribute, number) {
+function sourcechange(attribute, number, name) {
   target = "current";
   if(attribute == "next")
    {
@@ -62,6 +62,11 @@ function sourcechange(attribute, number) {
     {
       messageTOtarget(target, number);
       script.log("Target: " + target + " Command: " + attribute + " Value: " + number);
+    }
+  else if(attribute == "name")
+    {
+      messageTOtarget(target, name);
+      script.log("Target: " + target + " Command: " + attribute + " Value: " + name);
     }
 }
 
