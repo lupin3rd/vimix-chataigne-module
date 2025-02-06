@@ -3,7 +3,7 @@
   "type":"OSC",
   "path":"Software",
 
-  "version":"0.3.0",
+  "version":"0.4.0",
   "description":"Module for interacting with Vimix (Video Live Mixer) via OSC. https://brunoherbelin.github.io/vimix/",
   "url":"https://github.com/lupin3rd/Vimix-Chataigne-module",
   "downloadURL":"https://github.com/lupin3rd/vimix-chataigne-module/archive/refs/heads/main.zip",
