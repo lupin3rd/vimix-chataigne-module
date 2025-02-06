@@ -12,30 +12,33 @@ var resizey = null;
 
 function init() {
   script.log("Vimix module loaded");
+  local.values.current.setCollapsed(false);
+  local.values.sources.setCollapsed(false);
 }
 
 //function that send OSC message to Vimix
-function messageTOtarget(target, command, val1, val2, val3) {
-  if ( typeof val3 == 'undefined' )
+function messageTOtarget(target, command, val1, val2, val3, val4) {
+  if ( typeof val4 == 'undefined' )
   {
-    if ( typeof val2 == 'undefined' )
+    if ( typeof val3 == 'undefined' )
     {
-      if ( typeof val1 == 'undefined' )
+      if ( typeof val2 == 'undefined' )
       {
-      local.send("/vimix/"+target+"/"+command);
+        if ( typeof val1 == 'undefined' )
+        {
+        local.send("/vimix/"+target+"/"+command);
+        } else {
+          local.send("/vimix/"+target+"/"+command, val1);
+        }
       } else {
-        local.send("/vimix/"+target+"/"+command, val1);
+        local.send("/vimix/"+target+"/"+command, val1, val2);
       }
     } else {
-      local.send("/vimix/"+target+"/"+command, val1, val2);
+      local.send("/vimix/"+target+"/"+command, val1, val2, val3);
     }
   } else {
-    local.send("/vimix/"+target+"/"+command, val1, val2, val3);
+    local.send("/vimix/"+target+"/"+command, val1, val2, val3, val4);
   }
-}
-
-function oscEvent(address, args) {
-  script.log("OSC Message received "+address+", "+args.length+" arguments");
 }
 
 function moduleParameterChanged(param) {
@@ -130,7 +133,7 @@ function sourcecontrol(target, sourceid, name, batch, attribute, play, pause, al
     }
 }
 
-function sourcegeometry(target, sourceid, name, batch, attribute, positionx, positiony, grabx, graby, sizex, sizey, resizex, resizey, angle, turn) {
+function sourcegeometry(target, sourceid, name, batch, attribute, position, grabx, graby, sizex, sizey, resizex, resizey, angle, turn, CornerLowerLeft, CornerUpperLeft, CornerLowerRight, CornerUpperRight) {
   if(target=="id")
    {
      target = "#" + sourceid;
@@ -145,8 +148,8 @@ function sourcegeometry(target, sourceid, name, batch, attribute, positionx, pos
     }
   if(attribute == "position")
    {
-     messageTOtarget(target, attribute, positionx, positiony);
-     script.log("Target: " + target + " Command: " + attribute + " X: " + positionx + " Y: " + positiony);
+     messageTOtarget(target, attribute, position);
+     script.log("Target: " + target + " Command: " + attribute + " position: " + position);
    }
   else if(attribute == "grab")
    {
@@ -177,6 +180,11 @@ function sourcegeometry(target, sourceid, name, batch, attribute, positionx, pos
    {
       messageTOtarget(target, attribute);
       script.log("Target: " + target + " Command: " + attribute);
+   }
+  else if(attribute == "corner")
+   {
+     messageTOtarget(target, attribute, CornerLowerLeft, CornerUpperLeft, CornerLowerRight, CornerUpperRight);
+     script.log("Target: " + target + " Command: " + attribute + " A: " + CornerLowerLeft + " B: " + CornerUpperLeft + " C: " + CornerLowerRight + " D: " + CornerUpperRight);
    }
 }
 
@@ -390,5 +398,68 @@ function session(attribute, open, close) {
     {
       messageTOtarget(target, attribute, close);
       script.log("Target: " + target + " Command: " + attribute + " Value: " + close);
+    }
+}
+
+function oscEvent(address, args) {
+  script.log("OSC Message received "+address+" with arg: "+args[0]);
+  if(address.startsWith("/vimix/current"))
+  	{
+      setVimixCurrent(local.values.current, address, args[0]);
+    }
+  else if(address.startsWith("/vimix/output"))
+  	{
+    }
+  else
+    {
+      setVimixSources(local.values.sources, address, args[0]);
+    }
+}
+
+function setVimixCurrent(object, address, value)
+{
+  if(address == "/vimix/current/name")
+  	{
+      object.sourceName.set(value+'');
+      // reset sources container
+      local.values.removeContainer("Sources", "Sources");
+      local.values.addContainer("Sources", "Sources");
+    }
+  else if(address == "/vimix/current/lock")
+  	{
+      object.lock.set(value);
+    }
+  else if(address == "/vimix/current/play")
+  	{
+      object.play.set(value);
+    }
+  else if(address == "/vimix/current/depth")
+  	{
+      object.depth.set(value);
+    }
+  else if(address == "/vimix/current/alpha")
+  	{
+      object.alpha.set(value);
+  	}
+  else
+  	{
+      messageid = address.split("/");
+      if (value == 1)
+        {
+          object.id.set(parseInt(messageid[3]));
+        }
+  	}
+}
+
+function setVimixSources(object, address, value)
+{
+  messagesplit = address.split("/");
+  if (messagesplit[3] == "name")
+    {
+      object.addStringParameter(messagesplit[2]+"-name", messagesplit[2]+"-name", value);
+    }
+  else if (messagesplit[3] == "alpha")
+    {
+      object.addFloatParameter(messagesplit[2]+"-alpha", messagesplit[2]+"-alpha", value);
     }
 }
