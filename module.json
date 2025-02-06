@@ -8,7 +8,7 @@
   "url":"https://github.com/lupin3rd/Vimix-Chataigne-module",
   "downloadURL":"https://github.com/lupin3rd/vimix-chataigne-module/archive/refs/heads/main.zip",
 
-  "hasInput":false,
+  "hasInput":true,
   "hasOutput":true,
 
   "hideDefaultCommands":false,
@@ -16,10 +16,10 @@
   "defaults":
   {
     "autoAdd":true,
-    "oscInput":
-    {
+    "OSC Input":
+		{
       "localPort":7001
-    },
+		},
     "OSC Outputs": {
 			"OSC Output": {
 				"local": true,
@@ -29,16 +29,6 @@
 		}
   },
 
-  "parameters":
-  {
-    "Module param":
-    {
-      "type":"Integer"
-    }
-  },
-
-  "hideDefaultParameters": [ "autoAdd", "oscInput/localPort"],
-
   "scripts":
   [
     "vimix.js"
@@ -46,9 +36,43 @@
 
   "values":
   {
-    "Module value":
-    {
-      "type":"Float"
+    "Current":
+  	{
+  		"type":"Container",
+      "ID":
+  		{
+        "type":"Integer",
+        "readOnly": true
+  		},
+      "SourceName":
+  		{
+        "type":"String",
+        "readOnly": true
+  		},
+      "Lock":
+  		{
+        "type":"Boolean",
+        "readOnly": true
+  		},
+      "Play":
+  		{
+        "type":"Boolean",
+        "readOnly": true
+  		},
+      "Depth":
+  		{
+        "type":"Float",
+        "readOnly": true
+  		},
+      "Alpha":
+  		{
+        "type":"Float",
+        "readOnly": true
+  		}
+    },
+    "Sources":
+  	{
+  		"type":"Container"
     }
   },
 
@@ -217,24 +241,15 @@
         "Attribute":
         {
           "type":"Enum",
-          "options": { "Position":"position", "Grab":"grab", "Size":"size", "Resize":"resize", "Angle":"angle", "Turn":"turn", "Reset":"reset" }
+          "options": { "Position":"position", "Grab":"grab", "Size":"size", "Resize":"resize", "Angle":"angle", "Turn":"turn", "Reset":"reset", "Corner":"corner" }
         },
-        "PositionX":
+        "PositionValue":
         {
-          "type":"Float",
-          "min":-4,
-          "max":4,
+          "type":"Point2D",
+          "min":[-4,-4],
+          "max":[4,4],
           "description":"from -4.0 to 4.0",
-          "default":0,
-          "dependency": { "source":"Attribute", "value":"position", "check":"equals", "action":"show" }
-        },
-        "PositionY":
-        {
-          "type":"Float",
-          "min":-4,
-          "max":4,
-          "description":"from -4.0 to 4.0",
-          "default":0,
+          "default":[0,0],
           "dependency": { "source":"Attribute", "value":"position", "check":"equals", "action":"show" }
         },
         "GrabX":
@@ -308,6 +323,42 @@
           "description":"from -3.1416 to 3.1416",
           "default":0,
           "dependency": { "source":"Attribute", "value":"turn", "check":"equals", "action":"show" }
+        },
+        "CornerLowerLeft":
+        {
+          "type":"Point2D",
+          "min":[-1,-1],
+          "max":[1,1],
+          "description":"Corner A",
+          "default":[-1,-1],
+          "dependency": { "source":"Attribute", "value":"corner", "check":"equals", "action":"show" }
+        },
+        "CornerUpperLeft":
+        {
+          "type":"Point2D",
+          "min":[-1,-1],
+          "max":[1,1],
+          "description":"Corner B",
+          "default":[-1,1],
+          "dependency": { "source":"Attribute", "value":"corner", "check":"equals", "action":"show" }
+        },
+        "CornerLowerRight":
+        {
+          "type":"Point2D",
+          "min":[-1,-1],
+          "max":[1,1],
+          "description":"Corner B",
+          "default":[1,-1],
+          "dependency": { "source":"Attribute", "value":"corner", "check":"equals", "action":"show" }
+        },
+        "CornerUpperRight":
+        {
+          "type":"Point2D",
+          "min":[-1,-1],
+          "max":[1,1],
+          "description":"Corner B",
+          "default":[1,1],
+          "dependency": { "source":"Attribute", "value":"corner", "check":"equals", "action":"show" }
         }
       }
     },
